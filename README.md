@@ -4,7 +4,7 @@ Cette application web, développée en utilisant Flask, permet d'afficher les do
 
 ## Installation
 
-1. Installez les modules nécessaires (ceux déjà présents dans la bibliothèque standard de Python ne nécessitent pas d'installation supplémentaire):
+1. Installez les modules nécessaires (ceux avec une * sont déjà présents dans la bibliothèque standard de Python ne nécessitent pas d'installation supplémentaire):
    - Flask
    - datetime * 
    - request *
