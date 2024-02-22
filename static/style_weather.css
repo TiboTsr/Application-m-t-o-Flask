@@ -1,0 +1,106 @@
+*{
+    text-align: center;
+}
+
+body{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+p, h1, h2{
+    color: #ccc;
+}
+
+.forecast-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.day-container {
+    width: 18%; 
+    margin-bottom: 20px;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    color: #ccc;
+    box-sizing: border-box; 
+}
+
+.search-bar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #ccc;
+    padding: 10px;
+    text-align: center;
+}
+.search-bar button, .search-bar input{
+    color:#ccc;
+}
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.light-mode {
+    background-color: #f8f8f8b0;
+}
+
+.light-mode .day-container, .light-mode .search-bar{
+    color: #333;
+}
+
+.light-mode h1, .light-mode p, .light-mode h2,.light-mode strong, .light-mode h4 .light-mode label {
+    color: #333;
+}
+
+.dark-mode {
+    background-color: #333;
+}
+
+.dark-mode h1, .dark-mode p,.dark-mode h2, .dark-mode h4, .dark-mode strong, .dark-mode label {
+    color: #fff;
+}
+
+.top-buttons {
+    display: flex;
+    justify-content: right; 
+    align-items: center; 
+    width: 95%;
+    padding: 20px;
+}
+
+#bt-clair {
+    margin-right: 20px; 
+}
+
+
+
+/* Scrollbar */
+
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: black;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #4CAF50;
+    border-radius: 10px;
+    border: 0px solid black;
+}

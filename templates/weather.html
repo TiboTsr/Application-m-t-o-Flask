@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <!-- Configuration de l'en-tête de la page -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Titre de la page avec le nom de la ville -->
+    <title>Weather in {{ city }}</title>
+    <!-- Inclusion de la feuille de style externe -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_weather.css') }}">
+    <link rel="icon" href="../static/Weather.ico">
+</head>
+
+<body class="dark-mode">
+    <!-- Corps de la page avec la classe dark-mode par défaut -->
+    <div class="top-buttons">
+        <!-- Boutons pour basculer entre le mode clair et sombre -->
+        <button onclick="toggleMode('light')" id="bt-clair">Mode Clair</button>
+        <button onclick="toggleMode('dark')" id="bt-sombre">Mode Sombre</button>
+    </div>
+    <div class="search-bar">
+        <!-- Formulaire pour soumettre une ville à la route /weather -->
+        <form action="/weather" method="POST">
+            <label for="city">Entrez une ville:</label>
+            <input type="text" id="city" name="city" required style="color: #333; border-radius:6px;">  
+            <button type="submit" style="color: #fff;">Obtenir la météo</button>
+        </form>
+    </div>
+
+    <!-- Informations actuelles sur la météo pour la ville spécifiée -->
+    <h1>Météo actuelle à {{ city }}</h1>
+    {% if weather_data %}
+        <!-- Affichage des détails météorologiques actuels -->
+        <p>Température: {{ weather_data['main']['temp'] }}°C</p>
+        <p>Météo: {{ weather_data['weather'][0]['description'] }}</p>
+        <img src="https://openweathermap.org/img/wn/{{ weather_data['weather'][0]['icon'] }}@2x.png" alt="Weather Icon">
+        <p>Humidité: {{ weather_data['main']['humidity'] }}%</p>
+        <p>Vitesse du vent: {{ weather_data['wind']['speed'] }} m/s</p>
+        <p>Visibilité: {{ weather_data.get('visibility', 'N/A') }} mètres</p>
+        <p>Pression atmosphérique: {{ weather_data['main']['pressure'] }} hPa</p>
+        <p>Lever du soleil: {{ weather_data['sys']['sunrise'] | timestamp_to_datetime }}</p>
+        <p>Coucher du soleil: {{ weather_data['sys']['sunset'] | timestamp_to_datetime }}</p>
+        
+        {% if forecast_data and forecast_data['list'] %}
+        <!-- Prévisions pour les prochains jours -->
+        <h1>Prévisions pour les prochains jours :</h1>
+        <div class="forecast-container">
+            {% for forecast in forecast_data['list'] %}
+                <!-- Affichage des détails des prévisions -->
+                <div class="day-container">
+                    <strong>{{ forecast['dt'] | timestamp_to_datetime }}:</strong><br>
+                    <h4>Température: {{ forecast['main']['temp'] }}°C<br>
+                    Météo: {{ forecast['weather'][0]['description'] }}<br>
+                    <img src="https://openweathermap.org/img/wn/{{ forecast['weather'][0]['icon'] }}@2x.png" alt="Weather Icon"><br>
+                    Humidité: {{ forecast['main']['humidity'] }}%<br>
+                    Vitesse du vent: {{ forecast['wind']['speed'] }} m/s<br></h4>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucune données de prévision disponible pour la ville : {{ city }}</p>
+    {% endif %}
+    
+    {% else %}
+        <p>Aucune données disponible pour la ville : {{ city }}</p>
+    {% endif %}
+</body>
+<script>
+    // Script JavaScript pour basculer entre le mode clair et sombre
+    function toggleMode(mode) {
+        const body = document.body;
+        body.classList.remove('light-mode', 'dark-mode');
+        body.classList.add(mode + '-mode');
+    }
+</script>
+</html>

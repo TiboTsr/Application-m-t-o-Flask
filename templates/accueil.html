@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <!-- Configuration de l'en-tête de la page -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Application Météo">
+    <title>Application météo</title>
+    <!-- Inclusion de la feuille de style externe -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_accueil.css') }}">
+    <link rel="icon" href="../static/Weather.ico">
+</head>
+
+<body class="dark-mode">
+    <!-- Corps de la page avec la classe dark-mode par défaut -->
+    <div class="top-buttons">
+        <!-- Boutons pour basculer entre le mode clair et sombre -->
+        <button onclick="toggleMode('light')" id="bt-clair">Mode Clair</button>
+        <button onclick="toggleMode('dark')" id="bt-sombre">Mode Sombre</button>
+    </div>
+    <h1>Entrez une ville : </h1>
+    <form action="/weather" method="post">
+        <!-- Formulaire pour soumettre une ville à la route /weather -->
+        <label for="city">Ville :</label>
+        <input type="text" id="city" name="city" required>
+        <button type="submit" id="submit">Obtenir la météo</button>
+    </form>
+    <script>
+        // Script JavaScript pour basculer entre le mode clair et sombre
+        function toggleMode(mode) {
+            const body = document.body;
+            body.classList.remove('light-mode', 'dark-mode');
+            body.classList.add(mode + '-mode');
+        }
+    </script>
+</body>
+
+</html>
