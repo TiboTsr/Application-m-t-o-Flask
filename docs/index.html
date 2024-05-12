@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - Application Météo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            color: #333;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .code-section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Documentation de l'Application Météo</h1>
+
+    <section id="description">
+        <h2>Description</h2>
+        <p>
+            Cette application web, développée en utilisant Flask, permet d'afficher les données météorologiques
+            actuelles
+            et les prévisions pour une ville spécifique en se basant sur l'API OpenWeatherMap.
+        </p>
+    </section>
+
+    <section id="installation">
+        <h2>Installation</h2>
+        <ol>
+            <li>Installez les modules nécessaires en utilisant la commande suivante :
+                <pre><code>pip install Flask pytz python-dotenv requests</code></pre>
+            </li>
+            <li>Obtenez votre clé API OpenWeatherMap :
+                <ul>
+                    <li>Inscrivez-vous sur <a href="https://openweathermap.org/" target="_blank">OpenWeatherMap</a>
+                        pour obtenir une clé API gratuite.</li>
+                    <li>Modifiez le fichier <code>clé_api.env</code> pour y ajouter votre clé API OpenWeatherMap :
+                        <pre><code>API_KEY=VotreCleAPIOpenWeatherMap</code></pre>
+                    </li>
+                </ul>
+            </li>
+        </ol>
+    </section>
+
+    <section id="utilisation">
+        <h2>Utilisation</h2>
+        <ol>
+            <li>Exécutez le fichier <code>Main.py</code> en utilisant la commande :
+                <pre><code>python Main.py</code></pre>
+                ou exécutez directement le fichier <code>Application_météo.exe</code> pour lancer le serveur
+                directement.
+            </li>
+            <li>Accédez à l'application dans votre navigateur en visitant <a href="http://localhost:8080/"
+                    target="_blank">http://localhost:8080/</a>.</li>
+            <li>Entrez le nom d'une ville dans le formulaire et appuyez sur "Obtenir la météo".</li>
+        </ol>
+    </section>
+
+    <section id="utilisation-exe">
+        <h2>Utilisation avec l'exécutable</h2>
+        <p>
+            Si vous utilisez l'exécutable <code>Application_météo.exe</code>, aucune étape d'installation n'est
+            nécessaire.
+            Lancez simplement l'exécutable et accédez à l'application dans votre navigateur comme indiqué ci-dessus.
+        </p>
+    </section>
+
+    <section id="fonctionnalites">
+        <h2>Fonctionnalités</h2>
+        <ul>
+            <li>Affichage des données météorologiques actuelles, incluant la température, la météo, l'humidité, la
+                vitesse du vent, etc.</li>
+            <li>Fourniture des prévisions météorologiques pour les prochains jours.</li>
+        </ul>
+    </section>
+
+    <section id="structure-projet">
+        <h2>Structure du Projet</h2>
+        <ul>
+            <li><code>Main.py</code>: Fichier principal contenant le code Flask pour l'application.</li>
+            <li><code>Prevision_meteo.py</code>: Module contenant les fonctions pour obtenir les données météorologiques
+                à partir de l'API OpenWeatherMap.</li>
+            <li><code>templates/</code>: Dossier contenant les modèles HTML pour l'interface utilisateur.</li>
+            <li><code>static/</code>: Dossier contenant les fichiers CSS pour la mise en page et le logo des pages.</li>
+            <li><code>clé_api.env</code>: Fichier pour stocker la clé API OpenWeatherMap (à créer et configurer
+                manuellement).</li>
+        </ul>
+    </section>
+
+    <section class="code-section" id="main-py">
+        <h2>Code Source - Main.py</h2>
+        <pre><code>
+# Importation des modules nécessaires
+from flask import Flask, render_template, request
+from Prevision_meteo import get_weather_data, get_forecast_data, timestamp_to_datetime
+from dotenv import load_dotenv
+import os
+import sys
+
+# Initialisation de l'application Flask
+app = Flask(__name__)
+app.static_folder = 'static'
+app.template_folder = 'templates'
+
+# Chargement de la clé API depuis la variable d'environnement
+api_key = os.getenv('API_KEY')
+
+# Ajout d'un filtre Jinja pour convertir le timestamp en datetime
+app.jinja_env.filters['timestamp_to_datetime'] = timestamp_to_datetime
+
+# Définition d'une fonction pour obtenir le chemin des ressources en fonction de l'environnement
+# Pour convertir le fichier python en excutable
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+# Changement du répertoire de travail vers le répertoire du script
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+# Chargement des variables d'environnement depuis un fichier .env
+load_dotenv(dotenv_path='clé_api.env')
+
+# Définition de la route racine, rendant la page d'accueil
+@app.route('/')
+def index():
+    return render_template('accueil.html')
+
+# Définition de la route /weather pour gérer les données météorologiques
+@app.route('/weather', methods=['GET', 'POST'])
+def weather():
+    # Récupération de la ville depuis le formulaire en cas de soumission avec la méthode POST
+    city_query = request.form.get('city') if request.method == 'POST' else None
+
+    if city_query:
+        # Récupération des données météorologiques actuelles en utilisant la clé API et la requête de la ville
+        weather_data = get_weather_data(api_key, city_query, lang='fr', units='metric')
+
+        # Récupération des données de prévisions en utilisant la clé API et les coordonnées des données météorologiques actuelles
+        forecast_data = get_forecast_data(api_key, weather_data['coord']['lat'], weather_data['coord']['lon'], lang='fr', units='metric')
+
+        # Rendu du modèle météo avec les données obtenues
+        return render_template('weather.html', city=city_query, weather_data=weather_data, forecast_data=forecast_data)
+    else:
+        # Rendu du modèle météo avec un message d'erreur si aucune ville n'est trouvée
+        return render_template('weather.html', city=city_query, error_message="Aucune ville trouvée")
+
+# Exécution de l'application Flask si ce script est exécuté directement
+if __name__ == '__main__':
+    app.run(debug=True, port=8080)
+        </code></pre>
+    </section>
+
+    <section class="code-section" id="prevision-meteo-py">
+        <h2>Code Source - Prevision_meteo.py</h2>
+        <pre><code>
+# ... (Le code existant de Prevision_meteo.py)
+        </code></pre>
+    </section>
+
+    <section class="code-section" id="test-prevision-meteo-py">
+        <h2>Code Source - Test Unitaires (test_Prevision_meteo.py)</h2>
+        <pre><code>
+# ... (Le code existant de test_Prevision_meteo.py)
+        </code></pre>
+    </section>
+
+</body>
+
+</html>
