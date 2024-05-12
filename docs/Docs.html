@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation de l'Application Météo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #666;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Documentation de l'Application Météo</h1>
+
+    <h2>Installation</h2>
+    <p>Installez les modules nécessaires (ceux avec une * sont déjà présents dans la bibliothèque standard de Python ne nécessitent pas d'installation supplémentaire):</p>
+    <ul>
+        <li><code>Flask</code></li>
+        <li><code>datetime *</code></li>
+        <li><code>request *</code></li>
+        <li><code>pytz</code></li>
+        <li><code>dotenv *</code></li>
+        <li><code>os *</code></li>
+        <li><code>sys *</code></li>
+    </ul>
+    <p>Obtenez votre clé API OpenWeatherMap :</p>
+    <ol>
+        <li>Inscrivez-vous sur OpenWeatherMap pour obtenir une clé API gratuite.</li>
+        <li>Modifiez le fichier <code>clé_api.env</code> pour y ajouter votre clé API OpenWeatherMap</li>
+    </ol>
+
+    <pre><code>API_KEY=VotreCleAPIOpenWeatherMap</code></pre>
+
+    <h2>Utilisation</h2>
+    <p>Exécutez le fichier <code>Main.py</code></p>
+    <pre><code>python Main.py</code></pre>
+    <p>Ou exécutez directement le fichier <code>Application_météo.exe</code> pour lancer le serveur directement.</p>
+    <p>Accédez à l'application dans votre navigateur en visitant <a href="http://localhost:8080/">http://localhost:8080/</a>.</p>
+    <p>Entrez le nom d'une ville dans le formulaire et appuyez sur "Obtenir la météo".</p>
+
+    <h2>Fonctionnalités</h2>
+    <ul>
+        <li>Affiche les données météorologiques actuelles, incluant la température, la météo, l'humidité, la vitesse du vent, etc.</li>
+        <li>Fournit des prévisions météorologiques pour les prochains jours.</li>
+    </ul>
+
+    <h2>Structure du projet</h2>
+    <ul>
+        <li><code>app.py</code>: Fichier principal contenant le code Flask pour l'application.</li>
+        <li><code>Prevision_meteo.py</code>: Module contenant les fonctions pour obtenir les données météorologiques à partir de l'API OpenWeatherMap.</li>
+        <li><code>templates/</code>: Dossier contenant les modèles HTML pour l'interface utilisateur.</li>
+        <li><code>static/</code>: Dossier contenant les fichiers CSS pour la mise en page et le logo des pages.</li>
+    </ul>
+</body>
+</html>
